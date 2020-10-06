@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+	<style type="text/css">
+		.container {
+			width: 100%;
+			height: 50px;
+			background-color: gray;
+		}
+		* {
+			margin: 0;
+			padding: 0;
+		}
+/*		.imgBox {
+			margin: 1000px auto;
+		}*/
+		.imgBox {
+			margin-top: 10px;
+		}
+		.imgBox,img{
+			width: 100%;
+			height: 50px;
+			background-color: gray;
+		}
+		img {
+			display: none;
+		}
+
+	</style>
+</head>
+<body>
+	<!-- <div class="imgBox">
+		<img src="" alt="" data-img="https://ss0.bdstatic.com/94oJfD_bAAcT8t7mm9GUKT-xh_/timg?image&quality=100&size=b4000_4000&sec=1572587579&di=b2576ba259c0eaa90ea79a84b9a5f365&src=http://www.lgstatic.com/thumbnail_300x300/i/image/M00/A2/0C/Cgp3O1ipEhKAM_lwAAAs_vlUoqM183.jpg">
+	</div> -->
+	<!-- <div class="container">
+		
+	</div> -->
+	<div class="hhh sadf"></div>
+	<div class="hhh"></div>
+	<div class="hhash"></div>
+	<div class="hhh"></div>
+	<div class="hhhd"></div>
+	<div class="hhh"></div>
+	<div class="hdhh asd"></div>
+<script type="text/javascript" src="https://code.jquery.com/jquery-3.4.1.js"></script>
+<script type="text/javascript">
+	// console.time("A");
+	// let arr = [10, 20, 30],
+	// 	obj = {
+	// 		hhh: "aaa"
+	// 	};
+
+	// function fn(x, y, z) {
+	// 	let hhh = "a"
+	// 	function test1() {}
+	// 	console.log(x,y,z,this);
+
+	// };
+	// fn.apply(obj, arr);
+	// fn.call(obj, arr);
+	// fn.call(obj, ...arr);  // 基于es6的展开运算符，可以把数组形式的参数传入
+	// window.fn(...arr);    // 他的this指向的是window  this始终执行他的调用者
+	// console.timeEnd("A")
+
+	// (function () {
+	// 	function add(n) {
+	// 		return this + n
+	// 	};
+	// 	function minus(n) {	
+	// 		return this - n
+	// 	};
+	// 	["add", "minus"].forEach(item => {
+	// 		Number.prototype[item] = eval(item);
+	// 	})
+	// }())
+	// console.log((5).add(3).minus(2))
+
+	// function fn() {
+	// 	console.log(arguments);
+	// }
+	// fn(1,2,3,4);
+
+	// let fn = (...arg) => console.log(arg);
+	// fn(1,2,3,4)
+
+
+
+	// function each(callback, obj) {
+
+	// 	for (var i = 0; i < this.length; i++) {
+	// 		callback(this[i], i);
+	// 	}
+	// };
+	// Array.prototype.each = each;
+
+
+
+	// let a = [1,2,3,4,5];
+	// a.each((item, index) => {
+	// 	console.log(item + "+" + index);
+	// })
+
+
+		
+	// let arr = [10, 20, 30, 'AA', 40];
+	// 	obj = {};
+
+	// arr = arr.each(function (item, index) {
+	// 	if (isNaN(item)) {
+	// 		return false;
+	// 	}
+	// 	return item * 10;
+	// },obj);
+
+	// let str = "skafjdkljsadkfjskdfHLKHJKLHJ后来看到就安分卡拉季!2132131";
+	// str = str.replace(/[a-zA-Z]/g,content => {
+	// 	return content.toUpperCase() === content ? content.toLowerCase() : content.toUpperCase() 
+		
+	// })
+	// console.log(str)
+
+	// (function(){
+	// 	function myIndexOf(T) {
+	// 		for (var i =  0; i > this.length - T.lengthv; i++) {
+	// 			this.substr(i, lenT) === T ? res = i,break : null;
+	// 		}
+	// 	}	
+	// 	String.prototype.myIndexOf = myIndexOf;
+	// }())
+	// let S = "fdsfjklajljAMfalkjlfd",
+	// 	T = "AM";
+	// console.log(S.myIndexOf(T))
+
+	// 编写代码实现图片懒加载
+	// let $imgBox = $('.imgBox'),
+	// 	$img = $imgBox.children('img');
+	// 	$window = $(window);   // 每次创建都会创建一个jQuery的新实例，所以一起创建，然后保存起来就可以避免这个问题
+
+	// // JQ中的事件绑定支持多事件绑定： window.onload & window.onscroll  两个事件触发的时候执行相同的事件
+	// $(window).on('load scroll', function(){
+	// 	if ($img.attr('isLoad')=== 'true') {
+	// 		//之前加载过就不会重新加载
+	// 		return;
+	// 	}
+	// 	let $A = $imgBox.outerHeight() + $imgBox.offset().top,
+	// 	 	$B = $window.outerHeight() + $window.scrollTop();
+	// 	 	if ($A <= $B) {
+	// 	 	 	//加载真实图片
+	// 	 	$img.attr('src', $img.attr('data-img'));
+	// 	 	$img.on('load', function (){
+	// 	 	 		// 加载成功 : fadeIn是jq中的渐现动画
+	// 	 	 	// $img.css('display', 'block');
+	// 	 	 	$img.stop().fadeIn()
+	// 	 	})
+	// 	 	$img.attr('isLoad', true); // attr存储的自定义属性值都是字符串格式 “true”
+	// 	}
+	// });
+	// let $container = $('.container'),
+	// 	$imgBoxs = null,
+	// 	$window = $(window);
+
+
+
+	// 多个图片实现懒加载
+	// let str = '';
+	// // fill 方法是填充的意思，在数组中填充null
+	// new Array(20).fill(null).forEach(item => {
+	// 	str += `<div class="imgBox">
+	// 		<img src="" alt="" data-img="https://ss0.bdstatic.com/94oJfD_bAAcT8t7mm9GUKT-xh_/timg?image&quality=100&size=b4000_4000&sec=1572587579&di=b2576ba259c0eaa90ea79a84b9a5f365&src=http://www.lgstatic.com/thumbnail_300x300/i/image/M00/A2/0C/Cgp3O1ipEhKAM_lwAAAs_vlUoqM183.jpg">
+	// 	</div>`;
+	// })
+	// $container.html(str);
+	// $imgBoxs = $container.children('.imgBox');
+	// $window.on('load scroll', function(){
+		
+	// 	// $B获取浏览器地边框距离BODY的距离
+	// 	let $B = $window.outerHeight() + $window.scrollTop();
+	// 	// 循环每一个区域，根据自己区域距离BODY的距离，计算出里面的图片是否加载
+	// 	$imgBoxs.each((index, item) => {
+	// 		let $item = $(item),
+	// 			$itemA = $item.outerHeight() + $item.offset().top,
+	// 			isLoad = $item.attr('isLoad');
+
+
+	// 		if ( $itemA <= $B && isLoad !== 'true') {
+	// 			let $img = $item.children('img');
+
+	// 			$item.attr('isLoad', true);
+	// 			// 加载当前区域的图片
+	// 			$img.attr('src', $img.attr('data-img'));
+	// 			$img.on('load', function(){
+	// 				$img.stop().fadeIn();
+	// 			});
+	// 		}
+	// 	});
+	// })
+
+	// 编写一条正则，用来验证此规则： 一个6~16的字符串，必须同时包含大小写字母和数字
+	// let reg = /^(?![a-z]+$)(?![A-Z]+$)(?![0-9])[a-zA-Z0-9]{6,16}$/;
+// function $attr(property, value) {
+//     //获取当前页面所有的标签
+//     let elements = document.getElementsByTagName("*"),
+//         arr = [];
+//     elements = Array.from(elements); //把非数组转换为数组
+//     elements.forEach(item => {
+//         // 存储的是当前元素property对应的属性值
+//         let itemValue = item.getAttribute(property);
+//         if (property === 'class') {
+//             // => 样式属性名要特殊处理，因为里面可能有多个值
+//             new RegExp("\\b"+ value + "\\b").test(itemValue) ? arr.push(item) : null;
+//             return;
+//         }
+//         if (itemValue === value) {
+//             // 获取的值和传递的值校验成功： 当前就是我们想要的
+//             arr.push(item);
+//         }
+//     })
+//     return arr;
+// }
+// console.log($attr('class','hhh'))
+	
+	// var obj = {
+	// 	name: function () {
+	// 		console.log(this)
+	// 	}
+	// }
+	// var hhh = {
+	// 	name: 1,
+	// }
+	// obj.name.call('hhh')
+
+	// (function(){
+	// 	Array.prototype.push.call(arguments, '王五');
+	// 	console.log(arguments)
+	// }('张三'，'李四'))
+
+	// (function(){
+ //  		Array.prototype.push.call(arguments,'王五');
+ //  		console.log(arguments);//['张三','李四','王五']
+	// })('张三','李四')
+
+	function myMap() {
+		
+	}
+	Array.prototype.myMap = myMap
+</script>
+</body>
+</html>

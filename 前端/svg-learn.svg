@@ -1,0 +1,17 @@
+<svg version="1.1"
+     baseProfile="full"
+     width="300" height="360"
+     xmlns="http://www.w3.org/2000/svg">
+
+  <!-- <rect x="0" y="0" rx="10" width="50" height="50" fill="red"/>
+
+  <circle cx="100" cy="25" r="20" fill="green" stroke="black" stroke-width="10px" />
+
+  <text x="150" y="125" font-size="60" text-anchor="middle" fill="black">SVG</text> -->
+  <g transform="translate(100,100)" stroke="black" stroke-width="2">
+    <circle r="20" fill="transparent" />
+    <circle r="30" fill="transparent" />
+    <circle r="40" fill="transparent" />
+    <circle r="50" fill="transparent" />
+  </g>
+</svg>

@@ -1,0 +1,23 @@
+{
+  "name": "tree-vue-ele",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "0.19.2",
+    "core-js": "2.0.0",
+    "element-ui": "2.13.2",
+    "express": "4.17.1",
+    "loadsh": "0.0.4",
+    "vue": "2.6.11"
+  },
+  "devDependencies": {
+    "babel-plugin-component": "1.1.1"
+  }
+}

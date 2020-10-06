@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+  </head>
+  <body>
+
+  </body>
+  <script type="text/javascript">
+    function Fn (){
+      return this.name
+    }
+    Fn.prototype.say =function() {
+      this.name = 'hhh'
+    }
+    let fn = new Fn();
+    console.log(fn);
+  </script>
+</html>

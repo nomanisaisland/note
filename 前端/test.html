@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+  <meta charset="utf-8">
+  <title></title>
+  <style type="text/css">
+    .container {
+      width: 300px;
+      height: 200px;
+      background: pink;
+      position: relative;
+      text-align: center;
+
+    }
+
+    .container div {
+      display: inline-block;
+      vertical-align: middle;
+    }
+  </style>
+</head>
+<!-- <div class="container"> -->
+  <!-- <div class="" style="width: 0.78px">
+    <input type="file" id="file" onchange="upload(value)" />
+    <button id="btn">按钮</button>
+  </div> -->
+<!-- </div> -->
+
+<body>
+  <div id="app">
+
+  </div>
+
+</body>
+<script type="text/javascript">
+  // function upload(value) {
+  //   console.log(value)
+  // }
+  // let btn = document.querySelector('#btn');
+  // let file = document.querySelector('#file');
+  // btn.addEventListener('click',()=>{
+  //   console.log(file.files)
+  // })
+  // let a = [1,5,3,4,"hhh"];
+  //   // let b = a.push('c');
+  //   // console.log(a);
+  //   // console.log(b);
+  //   // let c = a.pop();
+  //   // console.log(a);
+  //   // console.log(b);
+  //   // console.log(c);
+  //   let b = a.map((val,index,arr) => {
+  //     return val * 2;
+  //   })
+  //   b.push('hhh');
+  //   console.log(a);
+  //   console.log(b);
+  // console.log(c);
+  // console.log(c);
+  // let date = new Date()
+  // console.log(date.toLocaleString());
+  // function* helloWorldGenerator() {
+  //   yield 'hello';
+  //   yield 'world';
+  //   return 'ending'
+  // }
+  // let hw = helloWorldGenerator()
+  // console.log(hw.next())
+  // console.log(hw.next())
+  // console.log(hw.next())
+
+  // function test(person) {
+  //   person.age = 26
+  //   person = {
+  //     name: 'yyy',
+  //     age: 30
+  //   }
+  //
+  //   return person
+  // }
+  // const p1 = {
+  //   name: 'yck',
+  //   age: 25
+  // }
+  // const p2 = test(p1)
+  // console.log(p1) // -> ?
+  // console.log(p2) // -> ?
+
+  // class PrimitiveString {
+  //   static [Symbol.hasInstance](x) {
+  //     return typeof x === 'string'
+  //   }
+  // }
+  // console.log("helloworld" instanceof PrimitiveString)
+
+
+  // console.log(typeof function aaa () {
+  //
+  // }.toString());
+  // let a = Symbol()
+  // console.log(a.toString());
+  // console.log([].toString());
+
+
+
+  // function MyPromise(exector) {
+  //   let self = this;
+  //   this.value = undefined;
+  //   this.reason = undefined;
+  //   // 定义promise 的状态
+  //   this.status = 'pending';
+  //   // 存储then 中成功的回调函数
+  //   this.onResolvedCallBacks = [];
+  //   // 存储then中失败的回调函数
+  //   this.onRejectedCallBacks = [];
+  //
+  //   function resolve(value) {
+  //     if (self.status === 'pending') {
+  //       self.reason = value;
+  //       self.status = 'resolved';
+  //       self.onResolvedCallBacks.forEach(fn => fn())
+  //     }
+  //   }
+  //
+  //   function reject(reason) {
+  //     if (self.status === 'pending') {
+  //       self.reason = reason;
+  //       self.status = 'rejected';
+  //       self.onRejectedCallBacks.forEach(fn => fn());
+  //     }
+  //   }
+  //   try {
+  //     exector(resolve, reject)
+  //   } catch (e) {
+  //     reject(e);
+  //   }
+  // }
+  // 在Promise原型上定义then方法，参数为成功和失败的回调
+  // MyPromise.prototype.then = function(onFulfilled, onRejected) {
+  //   let self = this;
+  //   if (this.status === 'resolved') {
+  //     onFulfilled(self.value);
+  //   }
+  //   if (this.status === 'rejected') {
+  //     onRejected(self.reason)
+  //   }
+  //   if (this.status === 'pending') {
+  //     this.onResolvedCallBacks.push(() => {
+  //       onFulfilled(self.value)
+  //     })
+  //     this.onRejectedCallBacks.push(() => {
+  //       onRejected(self.reason)
+  //     })
+  //   }
+  // }
+  //
+  // let mypromise = new MyPromise((resolve, reject) => {
+  //   setTimeout(() => {
+  //     resolve('success')
+  //   }, 1000)
+  // })
+  //
+  // mypromise.then(data => {
+  //   console.log(data)
+  // }, err => {
+  //   console.log(err)
+  // })
+
+
+  // promise 实现
+  // const PENDING = 'pending';
+  // const RESOLVED = 'resolved';
+  // const REJECTED = 'rejected';
+
+  // function MyPromise(fn) {
+  //   const that = this;
+  //   that.state = PENDING;
+  //   that.value = null;
+  //   that.resolvedCallBacks = [];
+  //   that.rejectedCallBacks = [];
+
+  //   function resolve(value) {
+  //     if (that.state === PENDING) {
+  //       that.state = RESOLVED;
+  //       that.value = value;
+  //       that.resolvedCallBacks.map(cb => cb(that.value));
+  //     }
+  //   }
+
+  //   function reject(value) {
+  //     if (that.state === PENDING) {
+  //       that.state = REJECTED;
+  //       that.value = value;
+  //       that.rejectedCallBacks.map(cb => cb(that.value))
+  //     }
+  //   }
+  //   try {
+  //     fn(resolve, reject)
+  //   } catch (e) {
+  //     reject(e)
+  //   }
+  // }
+
+  // MyPromise.prototype.then = function(onFulfilled, onRejected) {
+  //   const that = this;
+  //   onFulfilled = typeof onFulfilled === 'function' ? onFulfilled : v => v;
+  //   onRejected = typeof onRejected === 'function' ? onRejected : r => {
+  //     throw r
+  //   };
+
+  //   if (that.state === PENDING) {
+  //     that.resolvedCallBacks.push(onFulfilled);
+  //     that.rejectedCallBacks.push(onRejected)
+  //   }
+  //   if (that.state === RESOLVED) {
+  //     onFulfilled(that.value)
+  //   }
+  //   if (that.state === REJECTED) {
+  //     onRejected(that.value)
+  //   }
+  // }
+  // new MyPromise((resolve, reject) => {
+  //   setTimeout(() => {
+  //     resolve(1)
+  //   }, 1000)
+  // }).then((data)=>{
+  //   console.log(data);
+  // });
+
+  // function test() {
+  //   console.log(arguments)
+  //   Array.prototype.slice.call(arguments)
+  //   console.log(this.slice(0,1));
+  // }
+  // test(123456)
+  // function Test () {
+  //   this.name = "name"
+  // }
+  // function text() {
+  //   Test.apply(this)
+  //   console.log(this.name);
+  // }
+
+  // Function.prototype.myCall = function(context) {
+  //   if (typeof this !== 'Function') {
+  //     throw new TypeError('Error')
+  //   }
+  //   context = context || window;
+  //   context.fn = this;
+  //   const args = [...arguments].slice(1);
+  //   const result = context.fn(...args);
+  //   delete context.fn;
+  //   return result;
+  // }
+  // text()
+
+  let foo = function *(){
+      let x = 1;
+      let y = yield (x + 1);
+
+  }
+
+
+</script>
+<!-- <script type="text/javascript" src="./Object.js"></script> -->
+<script type="text/javascript" src="./response.js"></script>
+<script type="text/javascript">
+var vm = new vue();
+setTimeout(function(){
+  console.log('change');
+  console.log(vm.$data);
+  vm.$data.a = 444
+}, 1000)
+</script>
+</html>

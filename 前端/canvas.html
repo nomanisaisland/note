@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+  </head>
+  <body>
+    <canvas id="canvas" width="300" height="300"></canvas>
+  </body>
+  <script type="text/javascript">
+    let canvas = document.querySelector('#id');
+    if(canvas.getContext) {
+      let ctx = canvas.getContext('2d');
+    } else {
+      alert('浏览器版本太低')
+    }
+  </script>
+</html>
