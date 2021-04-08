@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <div id="app">
+        <h1>
+            {{person.name}}--- {{person.age}}
+        </h1>
+        <h2>
+            {{person.fav}}
+        </h2>
+        <h3>
+            {{msg}}
+        </h3>
+        <div v-text='msg'>
+
+        </div>
+        <div v-html='htmlStr'></div>
+        <input type="text" v-model='msg'>
+        <ul>
+            <li>1</li>
+            <li>2</li>
+            <li>3</li>
+        </ul>
+        <button v-on:click="handleClick"> 你好世界</button>
+        <button @click="handleClick2"> 你好世界</button>
+        <img v-bind:src="image" />
+    </div>
+    <script src="./observer.js"></script>
+    <script src="./vue.js"></script>
+    <script>
+        let Vm = new Vue({
+            el: '#app',
+            data: {
+                htmlStr: '<h1>sakdfjladsjf</h1>',
+                person: {
+                    name: "小马哥",
+                    age: 18,
+                    fav: '姑娘'
+                },
+                image: "https://dss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=2771978851,2906984932&fm=26&gp=0.jpg",
+                msg: '学习mvvm实现原理'
+            },
+            methods: {
+                handleClick() {
+                    alert('你好世界！')
+                },
+                handleClick2() {
+                    alert('我很好')
+                }
+            },
+        })
+    </script>
+</body>
+
+</html>

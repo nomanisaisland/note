@@ -1,4 +1,4 @@
-##MongoDB原生CRUD（增删改查）命令总结
+## MongoDB原生CRUD（增删改查）命令总结
 
 -C creat：
 
@@ -58,4 +58,40 @@
 
 
 
+
+## 聚合查询
+
+```javascript
+db.students.aggregate([
+    {
+        $match: {
+            id: "xxx"
+        },
+        $group: {
+            _id: null,
+            total: {
+                $sum: {
+                    $toDobule: "$sumValue"
+                }
+            },
+            cout: {
+                $sun: 1
+            }
+        }
+    },
+    {
+        
+    }
+])
+
+// 统计字段$sumValue的值，并且统计总数
+// 返回值
+return {
+    "0": {
+        _id: ,
+        total: $sumValue,
+        cout: sumNumber,
+    }
+}
+```
 

@@ -3019,3 +3019,20 @@ const Home = () => import('../pages/pagesHome/pagesHome.vue')
 </style>
 ```
 
+
+
+
+
+
+
+
+
+# VUE3.0
+
+vue/cli @4.5.0    使用elementui  
+
+```shell
+vue add element-plus
+```
+
+插槽的变化
