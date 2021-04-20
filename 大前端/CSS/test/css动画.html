@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+    <style type="text/css">
+     * {
+       margin: 0;
+       padding: 0;
+       list-style: none;
+       font-family: -apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Oxygen,Ubuntu,Cantarell,Fira Sans,Droid Sans,Helvetica Neue,sans-serif;
+       font-size: 12px;
+     }
+      .tabs {
+        display: inline-block;
+        width: auto;
+        background-color: #ccc;
+      }
+      .tabs > li {
+        position: relative;
+        width: auto;
+        display: inline-block;
+        float: left;
+        width: 50px;
+        height: 25px;
+        text-align: center;
+        cursor: pointer;
+      }
+      .tabs li::after {
+        position: absolute;
+        content: '';
+        left: 100%;
+        bottom: 0;
+        display: inline-block;
+        width: 0;
+        height: 2px;
+        background: red;
+        transition: all 1s;
+      }
+      .tabs li:hover::after {
+        content: '';
+        display: inline-block;
+        width: 100%;
+        height: 2px;
+        left: 0;
+        background: red;
+      }
+      .tabs li:hover::after + li {
+        left: 0;
+      }
+      .clearfix::after {
+        content: '';
+        display: block;
+        width: 100%;
+        height: 0;
+        clear: both;
+        overflow: hidden;
+        visibility: hidden;
+      }
+    </style>
+  </head>
+  <body>
+    <ul class="tabs clearfix marg20px">
+      <li>首页</li>
+      <li>测试1</li>
+      <li>测试2</li>
+      <li>测试3</li>
+    </ul>
+  </body>
+</html>
