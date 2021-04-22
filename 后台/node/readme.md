@@ -2923,3 +2923,342 @@ https://itbilu.com/nodejs/npm/41vWPhuEb.html
 ##  node中函数的特点 
 
 1) node中任何一个模块（js文件）都被一个外层函数所包裹 >  > 使用arguments.callee方法可以查到外层函数，如果你写的代码没有函数体包着这个方法，需要用arguments.callee.toString()查询外层函数 >  > 外层函数console.log(arguments.callee.toString());： >  function (exports, require, module, ***\*__\**filename, \**__\****dirname) { console.log(arguments.callee.toString()) 	exports：用于暴露模块 require：用于导入模块 module：用于暴露模块 __filename：当前文件的绝对路径 __dirname：当前文件所在文件夹的绝对路径  > 2) 为什么要有这个函数，这个函数的作用 >  >    1. 隐藏内部实现。 >     >    2. 支持CommonJs的模块化  ### Node中的global > 1). 对于浏览器端而言，js由以下三部分组成 >  >    1. DOM---浏览器对象模型-----很多API（location，history） >    2. BOM---文档对象模型------很多API（对dom的增删改查） >    3. ES规范--------ES5，ES6，ES7 > 2). Node端js由几部分组成 >  >    1. 没有了BOM---因为服务器不需要 >    2. 没有了DOM---因为没有浏览器窗口 >    3. 几乎包含所有的js规范（alert没有） >    4. 没有了window，但是取而代之的是一个叫做global（打印出来里面会显示很多配置）的全局变量。 tips： node中没有函数体包含的this指向的是一个空对象，浏览器中非严格模式指的是windows  ### 3包与包管理器 > 1）什么是包？ >  >   1. 我们电脑上的文件夹，包含了某些特定的文件，符合了某些特定的结构，就是一个包    > 2）一个标准的包，应该包含哪些内容？ >  >   1. package. json ------ 描述文件(包的“说明书”，必须要有! ! ! ) >   2. bin----------------- 可执行二进制文件 >   3. lib----------------- 经过编译后的js代码 >   4. doc----------------- 文档(说明文档、bug修复文档、版本变更记录文档) >   5. test ------------- 一些测试报告 > 3)如何让一一个普通文件夹变成一个包? > >   1. 让这个文件夹拥有一个: package. json文件即可, 且package , json里面的内容要合法。 >   2. 执行命令: npm init >   3. 包名的要求:不能有中文、不能有大写字母、不能与npm仓库上其他包同名。    > 4）npm与node的关系? (npm: node package manager )  > >   1. 安装node后自动安装npm (npm是node官方出的包管理器，专门用于管理包) > 5) npm的常用命令 #### 3.1 package包 > Node.js的包基本遵循CommonJs规范，包将一组相关的模块组合到一起，形成一组完整的工具。  > 包由包结构和包描述文件两部分组成。 >  >    1） 包结构：用于组织包中的各种文件 >    2） 包描述文件：描述包的相关信息，以供外部读取分析  ##### 3.1.1包结构 > 包实际就是一个压缩文件，解压以后还原为目录。符合CommonJs规范的目录，应该包含如下文件：  ---------- ` server.on('request', function(request,response){}) ` request 请求事件处理函数；需要接受两个参数： 1. Request请求对象 请求对象可以用来获取客户端的一些请求信息，例如请求路径 2.  Response 响应对象 响应对象可以用来给客户端发送响应消息 response对象有一个方法：write可以用来给客户端发送响应数据 write可以使用多次，但是最后一定要使用end来结束响应，否则客户端会一直等待，***\**\*\**浏览器上面会一直打转\**\*\*\**** 一个请求对应一个响应，如果在请求过程中，已经结束响应了，则不能重复发送响应 没有请求就没有响应 ` response.write()   //不推荐这种方法发送响应数据 ` ` response.end("aaa")  //推荐这种方法，直接end的同时发送响应数据 ` 绑定端口号，启动服务 ` server.listen(300),function(){}) ` ---------- ###数据编码 1. 在服务器默认发送的数据，其实是utf-8编码的内容 2. 但是浏览器不知道你是utf-8的内容 3. 浏览器在不知道的服务器响应内容编码的情况下会按照当前操作系统的默认编码去解析 4. 中文操作系统默认是 gbk 5. 解决方法就是正确的告诉浏览器我给你发送的是什么编码 6. 在http协议中，Content-Type就是用来告诉对方我给你发送的数据内容是什么类型的 ` response.setHeader('Content-Type','text/plain;charset=utf-8') response.setHeader('Content-Type','text/html;charset=utf-8') response.setHeader('Content-Type', 'application/json;charset=utf-8') response.end//支持两种数据类型数据，一种是二进制，一种是字符串 ` > [Content-Type对照表](http://tool.oschina.net/commons) 除了使用Content-Type用来指定编码，也可以在html页面中通过 meta元数据来声明当前文本的编码格式，浏览器也会识别 ` ***\* charset="UTF-8">** ` url：统一资源定位符，一个url其实要对应到一个资源的 		let myhttp = require('http'); 	let fs = require('fs'); 	let shigea; 	fs.readFile('诗歌.txt', function (err, data) { 	    shigea =  data.toString(); 	}); 	 	let webserver = myhttp.createServer(); 	//listen 监 听一个3008端口的服务器 	webserver.listen('3000', function () { 	    console.log("服务器已启动"); 	}) 	// on实时检测这个服务器的变化 	webserver.on('request', function (request, response) { 	    //request客户端发送过来的所有内容，消息，头 	    //response就是服务器反馈过来的内容 	    // response.setHeader('Content-Type','text/plain;charset=utf-8') 	    // response.setHeader('Content-Type','text/html;charset=utf-8') 	    // response.write("I hear you"); 	    // response.write("我收到你的信息了"); 	    // response.write("<h1>i hear you</h1>"); 	    // response.end(); 	    // console.log(request.url) 	    if (request.url == "/html") { 	        response.setHeader('Content-Type', 'text/html;charset=utf-8') 	        response.write("<a>首页</a>"); 	        response.end(); 	    } 	    if (request.url == "/json") { 	        response.setHeader('Content-Type', 'application/json;charset=utf-8') 	        // response.write("{'name': '首页'}"); 	        let json_a = {'name': '首页'}; 	        response.end(json_a.stringify())        	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        	    } 	    if (request.url == "/shige") { 	        response.setHeader('Content-Type', 'text/plain;charset=utf-8') 	        response.write(shigea); 	        response.end(); 	    } 	 	})  ---------- ##发送文件中的数据 1.  结合fs发送文件中的数据 2.  Content-Type 	不同资源对应的Content-Type是不以样的，图片就不需要指定编码了，因为我们常说的编码一般指的是：字符编码 	  	let myhttp = require('http'); 	let fs = require('fs'); 	let shigea; 	fs.readFile('诗歌.txt', function (err, data) { 	    shigea =  data.toString(); //data默认是二进制数据，toString()能转为我们认识的字符串 	}); 	 	let webserver = myhttp.createServer(); 	//listen 监 听一个3008端口的服务器 	webserver.listen('3000', function () { 	    console.log("服务器已启动"); 	}) 	// on实时检测这个服务器的变化 	webserver.on('request', function (request, response) { 	    //request客户端发送过来的所有内容，消息，头 	    //response就是服务器反馈过来的内容 	    // response.setHeader('Content-Type','text/plain;charset=utf-8') 	    // response.setHeader('Content-Type','text/html;charset=utf-8') 	    // response.write("I hear you"); 	    // response.write("我收到你的信息了"); 	    // response.write("***\*>**i hear you***\*>**"); 	    // response.end(); 	    // console.log(request.url) 	    //request.url就是端口号后面的路径 	    if (request.url == "/html") { 	        response.setHeader('Content-Type', 'text/html;charset=utf-8') 	        response.write("***\*>**首页***\*>**"); 	        response.end(); 	    } 	    if (request.url == "/json") { 	        response.setHeader('Content-Type', 'application/json;charset=utf-8') 	        // response.write("{'name': '首页'}"); 	        let json_a = {'name': '首页'}; 	        response.end(json_a.stringify())    	                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            	    } 	    if (request.url == "/shige") { 	        response.setHeader('Content-Type', 'text/plain;charset=utf-8') 	        response.write(shigea); 	        response.end(); 	    } 	}) 	  ---------- ###模块 1. require是一个方法，作用就是用来加载模块 1. 作用： 	 1. 加载文件模块并执行里面的代码 	 2. 拿到被加载的文件模块导出的接口对象 2. 在Node中，模块有三种： 1. 具名的核心模块，例如： 	  +  fs ：文件操作模块 	  +  http：网络服务构建模块 	  +  os：操作系统信息模块 	  +  path：路径处理模块 2. 用户自己编写的模块（.js文件） 	1. 相对路径必须加 ./  	2. 可以省略后缀名 3. 在Node中没有全局作用域，只有模块作用域 	1. 内部访问不到外部，外部也访问不到内部 	2. 默认都是封闭的 4. 既然是模块作用域，那如何让模块与模块之间通信 5. 有时候，我们加载文件模块的目的不是为了简简单单的执行里面的代码，更重要的是为了使用里面的某个成员  exports 使用方法： 			 	add.js: 	exports.add = function(){}	 	r.js: 	let a = require('add'); 	a.add();  ###http地址和端口的概念 1. ip地址用来定位计算机 2. 端口号用来定位具体的应用程序 3. 所有需要联网通信的应用程序都会占用一个端口号 4. 端口号的范围从0~65536之间 5. 在计算机中有一些默认的端口号最好不要去使用。例如：80 6. 我们在开发过程中使用一些简单好记的就可以了，例如：3000、5000等没有什么含义 7. 可以同时开启多个服务，但是一定要确保每个服务所占的端口号  ### 代码规范 [javascript standard style](https://standardjs.com/readme-zhcn.html) [airbnb javascript style guide](https://www.ctolib.com/mip/getjll-JavaScript-Style-Guide.html) 当你采用无分号的代码规范的时候，需要注意以下情况： 1. 当一行代码是以(、[、'开头的时候，则在前面补上一个分号用来避免一些语法解析错误，所以你会看到一些第三方的代码中一上来就以分号开头 结论：无论你的代码是有分号还是无分号风格，都建议在(、[、' 前补 个分号  >return有两个作用: >1. 方法返回值 >2. 阻止代码往后执行   ###读取文件目录 ` fs.readDir('/path',function(err,file){}) ` 怎么把内容(目录名)存进文件或者取代文件中的某个内容， 模板语法： let content = ``; data = data.replace('文件中的标记', content) 发送响应： res.end(data)     ###在Node中使用模板引擎 + art-templete   不仅可以在浏览器中使用，也可以在node中使用 - npm install art-template --save  + script引入的话，模板script需要type='text/template' id='tpl' + script脚本语法   + let templete = require('art-templete')  	fs.readFile('./1.html',function(err,data){  //data默认是二进制 			templatte.render(data.toString(),{ //而模板引擎的render方法接受的是字符串  				name: 'jack', 				... 			})													 	}) 		 ### 《编写可维护的JavaScript》   ### 服务端渲染页面和客户端渲染页面 ajax异步渲染的数据爬虫爬不到，服务端渲染的数据方面SEO爬取 + 区别： - 客户端渲染不利于SEO搜索引擎优化  - 服务端渲染是可以被爬虫抓取到的，客户端异步渲染是很难被爬虫抓取到的 - 真正的网站既不是纯异步也不是纯服务器渲染出来的 - 例如京东的商品采用的是服务端渲染，目的是为了SEO搜索引擎优化，而他的商品品论列表为了用户体验，而且也不需要SEO优化，所以采用的是客户端渲染。  ### 处理网站中的静态文件 浏览器收到服务端的资源数据后开始从上到下依次解析 + 为了让目录结构更加清晰，我们约定，把所有的HTML文件统一放在views目录中 浏览器收到html响应内容后，就要开始从上到下依次解析，当在解析过程中，如果发现有 ` link script img iframe video audio ` 等带有src或则link的herf属性 标签（具有外链的静态资源）的时候（a标签除外），浏览器会自动对这些静态资源发起新的请求 为了统一处理以上资源，我们约定把所有的静态资源都存放在pubilc目录中，一些外部引用包放在lib文件夹中 统一处理: 如果请求路径是以/public/开头的，则我们认为你要获取的public中的某个资源，所以我们就可以把请求路径当作文件路径来直接读取  哪些资源可以给用户访问，哪些不可以，我们可以通过代码来控制 注意：在服务器端中，文件的路径就不要写相对路径了，因为资源都是通过url标志来获取的，服务器已经开放了public目录,路径统一写/public/... /在这里的意思是根路径的意思 #### 如果访问不存在的网页，跳到404页面 	let http = require('http'); let fs = require('fs');  http.createServer(function (req,res) {     let url = req.url;     if (url === '/') {         fs.readFile('./view/index.html',function(err,data){             if (err) {                  res.setHeader('Content-Type','text/plain; charset=utf-8');                return res.end('404 not found')            }             res.end(data);        })     } else if (url.indexOf('/public/') === 0) {        fs.readFile('.' + url,function (err,data) {            if (err) {                res.end('404 not found')            }            return res.end(data);        })    } else {        fs.readFile('./view/404.html',function (err,data) {            if (err) {                return res.end('404 not found')            }            res.end(data)        })    } }).listen(3000,function () {     console.log("服务器已启动！") })  ###处理表单get提交 以前表单是怎么提交的？ 表单中的控件必须有name属性 表单提交分为： 1. 默认提交方式 2. 表单异步提交 action就是提交的地址，就是请求的url地址 method请求方法： 1. get 2.  post  ` /comment?name=hhh&message=fff ` 对于这种表单请求提交的路径，由于用户填写的内容不确定，无法判断完整的路径 解决方法：只要判断请求路径是/comment的时候，我就判断你的请求过来了 		let url = require('url'); 	let obj = url.parse('/comment?name=hhh&message=fff',ture); 	//true可以把转换出来的字符串再转换成对象，后续可以通过query（问号之后的部分）属性访问   pathname(不包含问号的部分) 		res.end(JSON.stringify(obj.query))//以json数据形式响应评论部分  使用parse的目的： 1. 拿到对象化的query和pathname ###如何通过服务器让客户端重定向 1. 状态码设置为302临时重定向 +  `res.statusCode = 302` 2. 在响应头中通过location告诉客户端往哪重定向 + `res.setHeader('Location','/') ` 如果客户端发现收到的服务器响应的状态码是302就会自动去响应头中找location 所以你就看到客户端自动跳转了 一次请求对于一次响应，响应结束请求结束。.end()会结束响应  1. /index.html 2. 开发public目录中的静态资源 3. /post  post.html 4. /comment 	+ 接受表单提交数据 	+ 存储表单提交数据 	+ 让表单重定向到/ 		- statusCode 		- setHeader  ###repl read eval print loop ### 在node中的模块系统 1. 什么是模块化 + 文件作用域 + 通信规则 	- 加载require 	- 导出exports ####commonjs模块规范 在Nodejs中有一个很重要的概念，模块系统 + 模块作用域 + 使用require方法加载模块 + 使用exports接口对象导出对象成员  1. 加载require `var 自定义变量名 = require('模块名')` 两个作用： + 执行被加载模块的代码 + 得到exports导出的接口对象 2. 导出exports    + Node中式模块作用域，默认文件中所有的成员只在当前文件模块有效    + 对于希望可以被其他模块访问的成员，我们把这些公开的成员挂载到exports接口对象上就可以 require加载规则： + 核心模块 + 第三方模块（兄弟模块中的第三方包无法直接通过require('package')拿到） + 自定义模块 + 优先从缓存加载 ```main.js require a.js require b.js  //由于a.js中加载了，此出导入只会得到b中的接口对象，但是不会重复加载，这样做的目的时提高加载速率 ``` ```a.js console.log('加载了') require b.js ``` ```b.js console.log('加载了') ``` 结果输出一个加载了 + 判断模块标识（require（模块标识符）） - 如果是非路径的模块标识： 	* ./ 	* ../ 	* /xxx (根路径下的xxx,几乎不用) 	* D:/a/d  （不用） 	* require('./a.js') - 核心模块（本质也是文件，不过已经编译到二进制文件中了，我们只需要引用就可以了）  	* require('fs') - 第三方模块（使用的时候用require引入，不可能和核心模块同名，既不是核心模块也不是路径模块） 	* 先查找当前文件所处目录中的node_modules目录  （没有找到就往上级目录找。直到磁盘根部） 	* 找node_modules/第三方模块名 	* 找node_modules/第三方模块名/package.json 	* 找node_modules/第三方模块名/package.json内的main属性 	* main中记录了模块的入口文件（如果没有main则会直接找index.js,默认备选项） 	*  exports是module.exports的引用： 				//在Node中，每个模块内部都有一个自己的module对象 			//在module对象中,有一个成员叫：exports也是一个对象 			//也就是说如果你需要对外导出成员，只需要把成员挂在到module的exports对象中 			//我们发现每次导出都需要通过module.exports....太麻烦了 			//node为了简化操作，专门提供了一个变量，module.exports等于exports  	 			var module = { 				exports: { 				} 			} 			 			var exports = module.exports;  //当引用中断时，可以用这个建立引用 			//谁来require我，谁就得到module.exports 		 			//默认在代码最后一句有： 			return module.exports  当一个模块需要导出单个成员的时候 直接给exports赋值是不管用的 `exports = 'hello'`   exports只是moudle.exports的一个引用，以上方式给exports重新赋值了，指向了新的对象  给exports赋值会断开和module.exports的引用，同理，给module.exports赋值也会断开和exports的引用： `module.exports = "hello" exports.foo = "world"`  ####TIPS 1. jQuery的each和js的foreach的区别 + ES5提供的（不兼容ie8） + each有第三方库提供的(2以下的版本是兼容ie8) + 主要用于遍历jQuery实例对象(伪数组) + 可以作为低版本foreach的替代品 + jQuery的实例对象不可以用foreach方法，如果需要使用必须转换成数组`[].slice.call(jQuery实例对象)` 2. 301状态码和302状态码的区别 + 301 是永久重定向，浏览器会记住 + 302是临时重定向   ### npm 	 	npm install --save jquery vue //通过空格同时下载多个包  --save会把包保存到包的依赖性，存在dependencies中，如果没有就不会保存 package.json  包描述文件  //可以通过npm init初始化出来  dependencies  依赖    保存第三方包的依赖信息 node_module文件删除了，使用npm install，也会根据package信息重新下载下来  npm升级 `npm install --global npm`  常用命令： 	 	npm init 	npm init -y //跳过向导 	npm install //只下载 	npm install --save  //下载并且保存依赖项 	npm i -S  //npm install --save简写 	npm uninstall //依赖性会依然保存 	npm uninstall --save //卸载包并删除依赖项   ### express（快速） 出现的原因：原生的http在某些方面不足以应对开发需求，所以使用框架提高效率，让代码更加统一。 1. 安装`npm i -S express` 2. 引包 `let express = require('express')` 		 	let app = express(); 	//当服务器收到get请求 / 的时候执行回调处理函数 	app.get('/',function(req,res){ 		res.send('hello express') 	}) 		//当服务器收到get请求 / about的时候执行回调处理函数 	app.get('/about',function(req,res){ 		res.send('hello about') 	}) 			 	//相当于server.listen 	app.listen(3000,function(){ 		console.log('服务器已启动') 	}) 公开指定目录	 	 	app.use('/public/',express.static('./public'))  基本路由 ###文件操作路径和模块标识路径的问题 我们使用的所有的文件操作都是异步的 1. 文件操作路径的相对路径可以省略 ./  + `fs.readFile('data/a.html',function())` 2. 模块加载中的路径 ./ 不能省 + `require('./data/a.js')`   ###node修改完代码后自动重启(热更新) nodemon工具，基于nodejs开发的一个第三方开发工具 `npm install --gloabal nodemon` 安装完后使用： `nodemon app.js` 分页思路  弹窗思路 
+
+
+
+
+
+ajax get post 一般是和后台交互， load一般是拿取网页或者节点
+
+### 1.3.1 node.js  有什么特点
+
+> 1）异步非阻塞式的I/O （I/O线程池）input output
+>
+> 2）特别适用于I/O密集型应用  （密集型：频繁的I/O操作） 请求多（对数据库的读写量大）
+>
+> 3）事件循环机制
+>
+> 4）单线程
+>
+> 5）跨平台
+
+
+### 1.3.2 不足之处
+
+> 1) 回调函数嵌套太多、太深（俗称回调地狱）
+>
+> 2）单线程，处理不好cpu密集型任务  响应多（服务器响应客户端）   这就是为什么同时很多人访问一个服务器的时候渲染速度会很慢
+
+### 1.4 Node.js的应用场景
+
+> 1) web服务API。
+>
+> 2）服务器渲染页面，提升速度
+>
+> 3）后端的web服务，例如跨域、服务器的请求
+
+
+### node构建的服务器和java服务器的不同
+
+> java服务器（多线程）：（请求慢的话浪费线程，但是响应块）
+> 1）一个线程只为一个请求服务，请求完成，线程结束  （请求过多的解决方案--高并发，使用服务器集群，增加线程）
+>
+> Node（单线程）：（请求慢的话没有影响，但是响应慢）
+> 1）一个线程为所有请求服务，
+
+
+
+### node中函数的特点
+
+> 1) node中任何一个模块（js文件）都被一个外层函数所包裹
+>
+> 使用arguments.callee方法可以查到外层函数，如果你写的代码没有函数体包着这个方法，需要用arguments.callee.toString()查询外层函数
+>
+> 外层函数console.log(arguments.callee.toString());：
+>
+> function (exports, require, module, __filename, __dirname) { console.log(arguments.callee.toString())
+
+	exports：用于暴露模块
+	require：用于导入模块
+	module：用于暴露模块
+	__filename：当前文件的绝对路径
+	__dirname：当前文件所在文件夹的绝对路径
+
+
+> 2) 为什么要有这个函数，这个函数的作用
+>
+>       1. 隐藏内部实现。
+>        
+>       2. 支持CommonJs的模块化
+
+
+
+### Node中的global
+
+> 1). 对于浏览器端而言，js由以下三部分组成
+>
+>       1. DOM---浏览器对象模型-----很多API（location，history）
+>       2. BOM---文档对象模型------很多API（对dom的增删改查）
+>       3. ES规范--------ES5，ES6，ES7
+
+> 2). Node端js由几部分组成
+>
+>       1. 没有了BOM---因为服务器不需要
+>       2. 没有了DOM---因为没有浏览器窗口
+>       3. 几乎包含所有的js规范（alert没有）
+>       4. 没有了window，但是取而代之的是一个叫做global（打印出来里面会显示很多配置）的全局变量。
+
+tips： node中没有函数体包含的this指向的是一个空对象，浏览器中非严格模式指的是windows
+
+
+
+### 3包与包管理器
+
+> 1）什么是包？
+>
+>     1. 我们电脑上的文件夹，包含了某些特定的文件，符合了某些特定的结构，就是一个包
+
+> 2）一个标准的包，应该包含哪些内容？
+>
+>     1. package. json ------ 描述文件(包的“说明书”，必须要有! ! ! )
+>     2. bin----------------- 可执行二进制文件
+>     3. lib----------------- 经过编译后的js代码
+>     4. doc----------------- 文档(说明文档、bug修复文档、版本变更记录文档)
+>     5. test ------------- 一些测试报告
+
+> 3)如何让一一个普通文件夹变成一个包?
+>
+>     1. 让这个文件夹拥有一个: package. json文件即可, 且package , json里面的内容要合法。
+>     2. 执行命令: npm init
+>     3. 包名的要求:不能有中文、不能有大写字母、不能与npm仓库上其他包同名。
+
+> 4）npm与node的关系? (npm: node package manager ) 
+>
+>     1. 安装node后自动安装npm (npm是node官方出的包管理器，专门用于管理包)
+
+> 5) npm的常用命令
+
+#### 3.1 package包
+
+> Node.js的包基本遵循CommonJs规范，包将一组相关的模块组合到一起，形成一组完整的工具。
+
+
+> 包由包结构和包描述文件两部分组成。
+>
+> 1） 包结构：用于组织包中的各种文件
+> 2） 包描述文件：描述包的相关信息，以供外部读取分析
+
+
+##### 3.1.1包结构
+
+> 包实际就是一个压缩文件，解压以后还原为目录。符合CommonJs规范的目录，应该包含如下文件：
+
+### 分析GET请求报文(给服务器看的)
+
+    GET http://localhost:3000/meishi HTTP/1.1
+    Host: localhost:3000
+    Connection: keep-alive
+    Upgrade-Insecure-Requests: 1
+    User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.142 Safari/537.36
+    DNT: 1
+    Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3
+    Accept-Encoding: gzip, deflate, br
+    Accept-Language: zh-CN,zh;q=0.9,en-US;q=0.8,en;q=0.7
+    空行
+    空行
+
+### 报文首行
+
+    GET http://localhost:3000/meishi HTTP/1.1
+        -请求类型 协议名://主机名:端口号/路由关键词 使用协议的版本
+
+### 报文头
+
+    Host: localhost:3000
+          --访问的主机名（地址，仅仅包含主机名+端口号）
+          --防盗链、广告计费
+    Connection: keep-alive
+          --告诉服务器，浏览器端支持长连接
+    Upgrade-Insecure-Requests: 1
+          --告诉服务器，浏览器端支持https协议
+    User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.142 Safari/537.36
+          --用户代理，告知服务器你的浏览器内核以及品牌，早期的时候用于判断用户的浏览器是拿一个品牌，现在不可用了。
+    DNT: 1
+          --禁止跟踪，告知服务器禁止跟踪，并不是写了该字段服务器就一定遵守。
+    Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3
+          --告知服务器浏览器能接受的文件类型，q是资源的优先级，取值范围是0-1,1的权限最高，默认是1
+    Accept-Encoding: gzip, deflate, br
+          --告诉服务器浏览器能支持的文件压缩格式
+    Accept-Language: zh-CN,zh;q=0.9,en-US;q=0.8,en;q=0.7
+          --告诉服务器，浏览器能够接受的语言
+
+### 空行
+
+### 报文体
+
+    GET 请求没有报文体
+
+## GET请求与POST请求
+
+### 前言
+
+> HTTP请求，最初设定了八种方法（也称为“动作”）。这八种方法本质上没有任何区别。只是让请求，更加有语义而已。
+> 八种方法分别为：OPTIONS、HEAD、GET、POST、PUT、DELETE、TRACE、CONNECT
+> 这八种方法最终经过“岁月沉淀”后，常用的只有两种，即：GET和POST
+
+### GET
+
+    1. 含义：从指定的资源获取数据（一种“索取”的感觉）。
+    2. 什么时候使用GET请求较为合适？
+        (1)单纯获取数据的时。
+        (2)请求中不包含敏感数据时。
+
+### POST
+
+    1.含义：向指定的资源提交要被处理的数据（一种“交差”的感觉）。
+    2.什么时候使用POST请求较为合适？
+        (1)传送相对敏感数据时。
+        (2)请求的结果有持续性的副作用，例如：传递的数据要作为数据源写入数据库时。
+    备注：使用了POST不代表的绝对的安全。
+
+### 常见的GET请求：
+
+    1.浏览器地址栏输入网址时（浏览器请求网页时时GET请求，且不可更改）
+    2.可以请求外部资源的html标签，例如：<img> <a> <link> <script>
+    3.发送Ajax时明确指出了使用GET请求
+    4.form表单提交时没有指明方式，默认使用GET
+
+### 常见的POST请求：
+
+    1.发送Ajax时明确指出了使用POST方式
+    2.使用第三方发送Ajax请求库时明确指出用POST时
+    3.form表单提交时明确指出使用POST方式
+
+### 二者的区别（幂等与非幂等）
+
+![avatar](H:/学习笔记/2.GET与POST对比.png)
+
+get主要用来请求固定信息，虽然也有请求主体（幂等），但是由于请求信息在地址栏，局限性太大
+
+post主要用来修改更新信息(非幂等)
+
+### 分析POST请求报文(给服务器看的)
+
+    POST http://localhost:3000/demo HTTP/1.1
+    Host: localhost:3000
+    Connection: keep-alive
+    Content-Length: 16
+    Cache-Control: max-age=0
+    Origin: http://localhost:63342
+    Upgrade-Insecure-Requests: 1
+    DNT: 1
+    Content-Type: application/x-www-form-urlencoded
+    User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.142 Safari/537.36
+    Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3
+    Referer: http://localhost:63342/node/day04/1.express%E6%9C%8D%E5%8A%A1%E5%99%A8/demo.html?_ijt=tjfnb0cpos62ql8umjmm9v24ve
+    Accept-Encoding: gzip, deflate, br
+    Accept-Language: zh-CN,zh;q=0.9,en-US;q=0.8,en;q=0.7
+    Cookie: Webstorm-9af2238=09820128-3adb-43e4-8242-a6f65c9e523a
+    
+    name=kobe&age=18
+
+### 报文首行
+
+    POST http://localhost:3000/demo HTTP/1.1
+        -
+
+### 报文头
+
+    Host: localhost:3000
+        --访问的主机名（地址，仅仅包含主机名+端口号）
+    Connection: keep-alive
+        --告诉服务器，浏览器端支持长连接
+    Content-Length: 16
+        --请求体的长度
+    Cache-Control: max-age=0
+        --用于控制强缓存
+    Origin: http://localhost:63342
+        --当前所处位置（主机位置+端口位置）
+    Upgrade-Insecure-Requests: 1
+        --告诉服务器，浏览器端支持https协议
+    DNT: 1
+        --禁止跟踪，告知服务器禁止跟踪，并不是写了该字段服务器就一定遵守。
+    Content-Type: application/x-www-form-urlencoded
+        --标识该请求是来自于一个form表单，并且以urlencoded形式进行编码
+    User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.142 Safari/537.36
+        --用户代理，告知服务器你的浏览器内核以及品牌，早期的时候用于判断用户的浏览器是拿一个品牌，现在不可用了。
+    Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3
+        --告知服务器浏览器能接受的文件类型，q是资源的优先级，取值范围是0-1,1的权限最高，默认是1
+    Referer: http://localhost:63342/node/day04/1.express%E6%9C%8D%E5%8A%A1%E5%99%A8/demo.html?_ijt=tjfnb0cpos62ql8umjmm9v24ve
+        --在当前url下发出去的请求，是一个完整url，也可以做防盗链、同时也可以做广告计费
+    Accept-Encoding: gzip, deflate, br
+        --告诉服务器浏览器能支持的文件压缩格式
+    Accept-Language: zh-CN,zh;q=0.9,en-US;q=0.8,en;q=0.7
+        --告诉服务器，浏览器能够接受的语言
+    Cookie: Webstorm-9af2238=09820128-3adb-43e4-8242-a6f65c9e523a
+        --Webstorm帮你“种”的一个cookie
+
+### 空行
+
+### 报文体
+
+    name=kobe&age=18
+        --携带过去的数据，以urlencoded进行编码
+
+###分析响应报文（给浏览器看的）
+    HTTP/1.1 200 OK
+    X-Powered-By: Express
+    Content-Type: text/html; charset=utf-8
+    Content-Length: 27
+    ETag: W/"1b-q8c2w67PUz7P4t0CNbDw9xqw6bo"
+    Date: Tue, 23 Jul 2019 06:20:18 GMT
+    Connection: keep-alive
+    
+
+    <h2>我是美食界面</h2>
+
+###报文首行
+    HTTP/1.1 200 OK
+    协议名/协议版本 状态码
+###报文头
+    X-Powered-By: Express
+        -服务器所使用的框架
+    Content-Type: text/html; charset=utf-8
+        -告诉浏览器解析文件的方式；文件编码方式
+    Content-Length: 27
+        -响应体的长度
+    ETag: W/"1b-NFYx6TA4AihYceTsWYDlBLJferg"
+        -协商缓存（资源唯一标识）
+    Date: Tue, 23 Jul 2019 06:20:18 GMT
+        -日期
+    Connection: keep-alive
+        -告诉浏览器，服务器支持长连接
+###空行
+    
+###报文体
+
+    <h2>我是美食界面</h2>
+
+###Http状态码（服务器给客户端的东西）
+
+###作用：  
+
+* 告诉客户端，当前服务器处理请求的结果
+
+###http状态码的分类
+
+ * 1xx : 服务器已经收到了本次请求，但是还需要进一步的处理才可以。
+ * 2xx : 服务器已经收到了本次请求，且已经分析、处理等........最终处理完毕！
+ * 3xx : 服务器已经接收到了请求，还需要其他的资源，或者重定向到其他位置，甚至交给其他服务器处理。
+ * 4xx ：一般指请求的参数或者地址有错误， 出现了服务器无法理解的请求（一般是前端的锅）。
+ * 5xx ：服务器内部错误（不是因为请求地址或者请求参数不当造成的），无法响应用户请求（一般是后端人员的锅）。
+
+###常见的几个状态码
+
+ * 200 ：成功（最理想状态）
+ * 301 ：重定向，被请求的旧资源永久移除了（不可以访问了），将会跳转到一个新资源，搜索引擎在抓取新内容的同时也将旧的网址替换为重定向之后的网址；
+ * 302 ：重定向，被请求的旧资源还在（仍然可以访问），但会临时跳转到一个新资源，搜索引擎会抓取新的内容而保存旧的网址。
+ * 304 ：请求资源重定向到缓存中（命中了协商缓存）。
+ * 404 ：资源未找到，一般是客户端请求了不存在的资源。
+ * 500 ：服务器收到了请求，但是服务器内部产生了错误。
+ * 502 ：连接服务器失败（服务器在处理一个请求的时候，或许需要其他的服务器配合，但是联系不上其他的服务器了）。

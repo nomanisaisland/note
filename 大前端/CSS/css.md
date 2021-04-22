@@ -1869,6 +1869,7 @@ https://stackoverflow.com/questions/48753691/cannot-access-cssrules-from-local-c
   ```
 
 + 负margin（伪等高）
+  
   + 因为背景是在padding区域显示的，设置一个大数值的padding-bottom，再设置相同数值的负的margin-bottom，使背景色铺满元素区域，又符合元素的盒模型的计算公式，实现视觉上的等高效果
 
 ```html
@@ -2107,7 +2108,696 @@ body,p{margin: 0;}
   </script>
   ```
 
-### 5. 
+### 5. flex布局
+
+Flex 是 Flexible Box 的缩写，意为"弹性布局"，用来为盒状模型提供最大的灵活性。
+
+任何一个容器都可以指定为flex布局
+
+```css
+.box {
+    display: flex;
+}
+```
+
++ 基本概念
+  + 采用 Flex 布局的元素，称为 Flex 容器（flex container），简称"容器"。它的所有子元素自动成为容器成员，称为 Flex 项目（flex item），简称"项目"。
+  + 容器默认存在两根轴：水平的主轴（main axis）和垂直的交叉轴（cross axis）。主轴的开始位置（与边框的交叉点）叫做`main start`，结束位置叫做`main end`；交叉轴的开始位置叫做`cross start`，结束位置叫做`cross end`。
+  + 项目默认沿主轴排列。单个项目占据的主轴空间叫做`main size`，占据的交叉轴空间叫做`cross size`。
+
++ 属性：
+
+  +  ```flex-direction: row | row-reverse | column | column-reverse```   决定主轴的方向（即项目的排列方向）。
+    + row（默认值）：主轴为水平方向，起点在左端
+    + row-reverse：主轴为水平方向，起点在右端
+    + column: 主轴为垂直方向，起点在上沿
+    + column-reverse: 主轴为垂直方向，起点在下沿
+  + ```flex-wrap: nowrap | wrap | wrap-reverse;``` 定义如果一条轴线排不下，如何换行。
+    + nowrap  （默认）：不换行。
+    + wrap：换行，第一行在上方。
+    + wrap-reverse: 换行，第一行在下方。
+  + ```flex-flow: <flex-direction> || <flex-wrap>;```   `flex-flow`属性是`flex-direction`属性和`flex-wrap`属性的简写形式，默认值为`row nowrap`。
+  + ```justify-content: flex-start | flex-end | center | space-between | space-around;```  属性定义了项目在主轴上的对齐方式。
+    + `flex-start`（默认值）：左对齐
+    + `flex-end`：右对齐
+    + `center`： 居中
+    + `space-between`：两端对齐，项目之间的间隔都相等。
+    + `space-around`：每个项目两侧的间隔相等。所以，项目之间的间隔比项目与边框的间隔大一倍。
+  + ```align-items: flex-start | flex-end | center | baseline | stretch;```  定义项目在交叉轴上如何对齐。
+    + `flex-start`：交叉轴的起点对齐。
+    + `flex-end`：交叉轴的终点对齐。
+    + `center`：交叉轴的中点对齐。
+    + `baseline`: 项目的第一行文字的基线对齐。
+    + `stretch`（默认值）：如果项目未设置高度或设为auto，将占满整个容器的高度。
+  + ```align-content: flex-start | flex-end | center | space-between | space-around | stretch;``` 定义了多根轴线的对齐方式。如果项目只有一根轴线，该属性不起作用。
+    + `flex-start`：与交叉轴的起点对齐。
+    + `flex-end`：与交叉轴的终点对齐。
+    + `center`：与交叉轴的中点对齐。
+    + `space-between`：与交叉轴两端对齐，轴线之间的间隔平均分布。
+    + `space-around`：每根轴线两侧的间隔都相等。所以，轴线之间的间隔比轴线与边框的间隔大一倍。
+    + `stretch`（默认值）：轴线占满整个交叉轴。
+
++ 搭配属性：
+
+  + `order: <integer>;`   定义项目的排列顺序。数值越小，排列越靠前，默认为0。
+
+  + ` flex-grow: <number>; /* default 0 */`  定义项目的放大比例，默认为`0`，即如果存在剩余空间，也不放大。
+
+    + 如果所有项目的`flex-grow`属性都为1，则它们将等分剩余空间（如果有的话）。如果一个项目的`flex-grow`属性为2，其他项目都为1，则前者占据的剩余空间将比其他项多一倍。
+
+  + `flex-shrink: <number>; /* default 1 */`  定义了项目的缩小比例，默认为1，即如果空间不足，该项目将缩小。
+
+    + 如果所有项目的`flex-shrink`属性都为1，当空间不足时，都将等比例缩小。如果一个项目的`flex-shrink`属性为0，其他项目都为1，则空间不足时，前者不缩小。
+    + 负值对该属性无效。
+
+  + ` flex-basis: <length> | auto; /* default auto */`  定义了在分配多余空间之前，项目占据的主轴空间（main size）。浏览器根据这个属性，计算主轴是否有多余空间。它的默认值为`auto`，即项目的本来大小。
+
+    + 它可以设为跟`width`或`height`属性一样的值（比如350px），则项目将占据固定空间。
+
+  + `flex: none | [ <'flex-grow'> <'flex-shrink'>? || <'flex-basis'> ]`   `flex`属性是`flex-grow`, `flex-shrink` 和 `flex-basis`的简写，默认值为`0 1 auto`。后两个属性可选。
+
+    + 该属性有两个快捷值：`auto` (`1 1 auto`) 和 none (`0 0 auto`)。
+    + 建议优先使用这个属性，而不是单独写三个分离的属性，因为浏览器会推算相关值。
+
+  + `align-self: auto | flex-start | flex-end | center | baseline | stretch;`  允许单个项目有与其他项目不一样的对齐方式，可覆盖`align-items`属性。默认值为`auto`，表示继承父元素的`align-items`属性，如果没有父元素，则等同于`stretch`。
+
+    
+
+# @media媒体查询
+
+## 1. 作用
+
++  使用 @media 查询，你可以针对不同的媒体类型定义不同的样式。
++ @media 可以针对不同的屏幕尺寸设置不同的样式，特别是如果你需要设置设计响应式的页面，@media 是非常有用的。
++ 当你重置浏览器大小的过程中，页面也会根据浏览器的宽度和高度重新渲染页面。
+
+## 2. 语法
+
+```css
+@media mediatype and|not|only (media feature) {
+    CSS-Code;
+}
+
+<link rel="stylesheet" media="mediatype and|not|only (media feature)" href="mystylesheet.css">
+```
+
+## 3. 媒体特性
+
++ [`any-hover`](https://developer.mozilla.org/zh-CN/docs/Web/CSS/@media/any-hover)  是否有任何可用的输入机制允许用户（将鼠标等）悬停在元素上？
+
+  + 属性：
+
+    + none    可用的输入机制里没有机制可以方便地 hover，或者不存在定点输入机制。
+    + **hover** 一个或多个可用的输入机制可以方便地在元素上 hover。
+
+  + 语法：
+
+    ```css
+    @media (any-hover: hover) {
+      a:hover {
+        background: yellow;
+      }
+    }
+    ```
+
+  + 作用：
+
+    + 可以控制任何媒体的悬停样式，目测没太大用处
+
++ [`any-pointer`](https://developer.mozilla.org/zh-CN/docs/Web/CSS/@media/any-pointer)  可用的输入机制中是否有任何指针设备，如果有，它的精度如何？
+
+  + 属性：
+
+    + **none**  没有可用的定点设备
+    + **coarse**  至少有一个输入途径包含一个精度有限的定点装置。
+    + **fine**  至少有一个输入途径包含一个精确的定点装置。
+
+  + 语法：
+
+    ```css
+    input[type="checkbox"]:checked {
+      background: gray;
+    }
+    
+    @media (any-pointer: fine) {
+      input[type="checkbox"] {
+        -moz-appearance: none;
+        -webkit-appearance: none;
+        appearance: none;
+        width: 15px;
+        height: 15px;
+        border: 1px solid blue;
+      }
+    }
+    
+    @media (any-pointer: coarse) {
+      input[type="checkbox"] {
+        -moz-appearance: none;
+        -webkit-appearance: none;
+        appearance: none;
+        width: 30px;
+        height: 30px;
+        border: 2px solid red;
+      }
+    }
+    ```
+
+  + 作用：目测没有用
+
++ [`aspect-ratio`](https://developer.mozilla.org/zh-CN/docs/Web/CSS/@media/aspect-ratio) 视窗（viewport）的宽高比
+
+  + 语法：
+
+    ```css
+    /* 最小宽高比 */
+    @media (min-aspect-ratio: 8/5) {
+      div {
+        background: #9af; /* blue */
+      }
+    }
+    
+    /* 最大宽高比 */
+    @media (max-aspect-ratio: 3/2) {
+      div {
+        background: #9ff;  /* cyan */
+      }
+    }
+    
+    /* 明确的宽高比, 放在最下部防止同时满足条件时的覆盖*/
+    @media (aspect-ratio: 1/1) {
+      div {
+        background: #f9a; /* red */
+      }
+    }
+    ```
+
+    
+
++ [`color` (en-US)](https://developer.mozilla.org/en-US/docs/Web/CSS/@media/color)   输出设备每个像素的比特值，常见的有 8、16、32 位。如果设备不支持输出彩色，则该值为 0
+
+  该`color`功能被指定为`<integer>，`值表示输出设备每个颜色分量（红，绿，蓝）的位数的值。如果设备不是彩色设备，则值为零。这是一个范围功能，也就是说，您也可以使用前缀`min-color`和`**max-color**`变量分别查询最小值和最大值。
+
+  
+
+  **注：**如果用不同的位数表示不同的颜色分量，则使用最小的数目。例如，如果显示器使用5位用于蓝色和红色，6位用于绿色，那么该设备被认为每种颜色组件使用5位。如果设备使用索引颜色，则使用颜色表中每个颜色分量的最小位数。
+
+  + 语法：
+
+    ```css
+    p {
+      color: black;
+    }
+    
+    /* Any color device */
+    @media (color) {
+      p {
+        color: red;
+      }
+    }
+    
+    /* Any color device with at least 8 bits per color component */
+    @media (min-color: 8) {
+      p {
+        color: #24ba13;
+      }
+    }
+    ```
+
+    
+
++ [`color-gamut` (en-US)](https://developer.mozilla.org/en-US/docs/Web/CSS/@media/color-gamut)  用户代理和输出设备大致程度上支持的色域
+
+  + 属性：
+
+    + srgb   输出设备可以支持大约[sRGB](https://en.wikipedia.org/wiki/SRGB)色域或更多。这包括绝大多数的彩色显示器。
+    + p3   输出设备可以支持大约[DCI P3色彩空间](https://en.wikipedia.org/wiki/DCI-P3)指定的色域或更多。p3色域比srgb色域大，包含srgb色域。
+    + rec2020   输出设备可以支持大约[ITU-R建议书BT.2020色空间](https://en.wikipedia.org/wiki/Rec._2020)指定的色域。rec2020色域大于p3色域。
+
+  + 语法：
+
+    ```css
+    @media (color-gamut: srgb) {
+      p {
+        background: #f4ae8a;
+      }
+    }
+    ```
+
+    
+
++ [`color-index` (en-US)](https://developer.mozilla.org/en-US/docs/Web/CSS/@media/color-index)  输出设备的颜色查询表（color lookup table）中的条目数量，如果设备不使用颜色查询表，则该值为 0
+
+  ​	该`color-index`功能被指定为`<integer>`值表示输出设备的颜色查找表中的条目数量的值。（如果设备不使用这样的表，则此值为零）。这是一个范围特性，也就是说，也可以使用前缀`min-color-index`和`**max-color-index**`变量分别查询最小值和最大值。
+
+  + 语法：
+
+    ```css
+    p {
+      color: black;
+    }
+    
+    @media (color-index) {
+      p {
+        color: red;
+      }
+    }
+    
+    @media (min-color-index: 15000) {
+      p {
+        color: #1475ef;
+      }
+    }
+    
+    //自定义样式表 
+    <link rel="stylesheet" href="http://foo.bar.com/base.css" />
+    <link rel="stylesheet" media="all and (min-color-index: 256)" href="http://foo.bar.com/color-stylesheet.css" />
+    ```
+
+    
+
++ [`display-mode` (en-US)](https://developer.mozilla.org/en-US/docs/Web/CSS/@media/display-mode)   应用程序的显示模式，如web app的manifest中的[`display`](https://developer.mozilla.org/zh-CN/docs/Web/Manifest#display) 成员所指定
+
+  + 属性：
+
+    + fullscreen
+    + standalone
+    + minimal-ui
+    + browser
+
+  + 语法：
+
+    ```css
+    @media all and (display-mode: fullscreen) {
+      body {
+        margin: 0;
+        border: 5px solid black;
+      }
+    }
+    ```
+
+    
+
++ [`forced-colors` (en-US)](https://developer.mozilla.org/en-US/docs/Web/CSS/@media/forced-colors)  检测是user agent否限制调色板
+
++ [`grid` (en-US)](https://developer.mozilla.org/en-US/docs/Web/CSS/@media/grid)   输出设备使用网格屏幕还是点阵屏幕？
+
+  该`grid`特征被指定为表示输出设备是否基于网格的[``](https://developer.mozilla.org/en-US/docs/Web/CSS/mq-boolean)值（`0`或`1`）。
+
+  + 语法：
+
+    ```css
+    :not(.unknown) {
+      color: lightgray;
+    }
+    
+    @media (grid: 0) {
+      .unknown {
+        color: lightgray;
+      }
+    
+      .bitmap {
+        color: red;
+      }
+    }
+    
+    @media (grid: 1) {
+      .unknown {
+        color: lightgray;
+      }
+    
+      .grid {
+        color: red;
+      }
+    }
+    ```
+
+    
+
++ [`height` (en-US)](https://developer.mozilla.org/en-US/docs/Web/CSS/@media/height)  视窗（viewport）的高度
+
+  + 语法：
+
+    ```css
+    /* Exact height */
+    @media (height: 360px) {
+      div {
+        color: red;
+      }
+    }
+    
+    /* Minimum height */
+    @media (min-height: 25rem) {
+      div {
+        background: yellow;
+      }
+    }
+    
+    /* Maximum height */
+    @media (max-height: 40rem) {
+      div {
+        border: 2px solid blue;
+      }
+    }
+    ```
+
+    
+
++ [`hover`](https://developer.mozilla.org/zh-CN/docs/Web/CSS/@media/hover)  主要输入模式是否允许用户在元素上悬停
+
+  + 语法：
+
+    ```css
+    @media (hover: hover) {
+      a:hover {
+        background: yellow;
+      }
+    }
+    ```
+
+    
+
++ [`inverted-colors` (en-US)](https://developer.mozilla.org/en-US/docs/Web/CSS/@media/inverted-colors)  user agent或者底层操作系统是否反转了颜色
+
+  + 属性
+    + `none`颜色显示正常。
+    + `inverted`显示区域内的所有像素都已倒置。
+
++ light-level 环境光亮度
+
+  + 属性：
+
+    + `dim`该设备用于昏暗的环境，过度的对比度和亮度会使读者分心或不舒服。例如：夜间，或室内昏暗的环境
+    + `normal`该设备用于屏幕理想范围内的光照水平的环境中，并且不需要任何特定的调整。
+    + `washed`该设备是在一个非常明亮的环境中使用，导致屏幕被渲光，难以阅读。例如：明亮的日光。
+
+  + 语法：
+
+    ```css
+    @media (light-level: normal) {
+      p { background: url("texture.jpg"); color: #333 }
+    }
+    
+    @media (light-level: dim) {
+      p { background: #222; color: #ccc }
+    }
+    
+    @media (light-level: washed) {
+      p { background: white; color: black; font-size: 2em; }
+    }
+    ```
+
+    
+
++ [`monochrome` (en-US)](https://developer.mozilla.org/en-US/docs/Web/CSS/@media/monochrome)  输出设备单色帧缓冲区中每个像素的位深度。如果设备并非黑白屏幕，则该值为 0
+
+  该`monochrome`特征被指定为`<integer>`表示单色帧缓冲器中每个像素的位数。如果设备不是单色设备，则该值为零。这是一个范围功能，也就是说，您也可以使用前缀`min-monochrome`和`**max-monochrome**`变量分别查询最小值和最大值。
+
+  + 语法：
+
+    ```css
+    /* Any monochrome device */
+    @media (monochrome) {
+      p {
+        color: #333;
+      }
+    }
+    
+    /* Any non-monochrome device */
+    @media (monochrome: 0) {
+      p {
+        color: #ee3636;
+      }
+    }
+    ```
+
++ [`orientation`](https://developer.mozilla.org/zh-CN/docs/Web/CSS/@media/orientation)  视窗（viewport）的旋转方向
+
+  + 属性：
+
+    + `portrait`该设备是纵向的，即高度大于或等于宽度。
+    + `landscape`设备处于横向方向，即宽度大于高度。
+
+  + 语法：
+
+    ```css
+    body {
+      display: flex;
+    }
+    
+    div {
+      background: yellow;
+    }
+    
+    @media screen and (orientation: landscape) {
+      body {
+        flex-direction: row;
+      }
+    }
+    
+    @media screen and (orientation: portrait) {
+      body {
+        flex-direction: column;
+      }
+    }
+    ```
+
+    
+
++ [`overflow-block` (en-US)](https://developer.mozilla.org/en-US/docs/Web/CSS/@media/overflow-block)  输出设备如何处理沿块轴溢出视窗(viewport)的内容
+
+  + 属性
+
+    + `none`不显示溢出块轴的内容。
+    + `scroll`通过滚动来看到溢出块轴的内容。
+    + `optional-paged`通过滚动可以看到溢出块轴的内容，但可以手动触发分页符（例如通过`break-inside`等），以便在下一页显示以下内容。
+    + `paged`内容分成不连续的页面; 在下一页显示在块轴上溢出一个页面的内容。
+
+  + 语法：
+
+    ```css
+    @media (overflow-block: scroll) {
+      p {
+        color: red;
+      }
+    }
+    ```
+
++ [`overflow-inline` (en-US)](https://developer.mozilla.org/en-US/docs/Web/CSS/@media/overflow-inline)   沿内联轴溢出视窗(viewport)的内容是否可以滚动？
+
+  + 属性：
+
+    + `none`内联轴溢出的内容不显示。
+    + `scroll`滚动到内联轴上的内容可以被看到。
+
+  + 语法：
+
+    ```css
+    @media (overflow-inline: scroll) {
+      p {
+        color: red;
+      }
+    }
+    ```
+
++ [`pointer` (en-US)](https://developer.mozilla.org/en-US/docs/Web/CSS/@media/pointer)  主要输入机制是一个指针设备吗？如果是，它的精度如何？
+
+  + 属性：
+
+    + `none`主要输入机制不包括指点设备。
+    + `coarse`主要输入机制包括精度有限的定点设备。
+    + `fine`主要的输入机制包括一个精确的指针设备。
+
+  + 语法：
+
+    ```css
+    input[type="checkbox"]:checked {
+      background: gray;
+    }
+    
+    @media (pointer: fine) {
+      input[type="checkbox"] {
+        -moz-appearance: none;
+        -webkit-appearance: none;
+        appearance: none;
+        width: 15px;
+        height: 15px;
+        border: 1px solid blue;
+      }
+    }
+    
+    @media (pointer: coarse) {
+      input[type="checkbox"] {
+        -moz-appearance: none;
+        -webkit-appearance: none;
+        appearance: none;
+        width: 30px;
+        height: 30px;
+        border: 2px solid red;
+      }
+    }
+    ```
+
+    
+
++ [`prefers-color-scheme`](https://developer.mozilla.org/zh-CN/docs/Web/CSS/@media/prefers-color-scheme)  探测用户倾向于选择亮色还是暗色的配色方案。
+
++ [`prefers-contrast` (en-US)](https://developer.mozilla.org/en-US/docs/Web/CSS/@media/prefers-contrast)  探测用户是否有向系统要求提高或降低相近颜色之间的对比度
+
++ [`prefers-reduced-motion`](https://developer.mozilla.org/zh-CN/docs/Web/CSS/@media/prefers-reduced-motion)  用户是否希望页面上出现更少的动态效果
+
++ [`prefers-reduced-transparency` (en-US)](https://developer.mozilla.org/en-US/docs/Web/CSS/@media/prefers-reduced-transparency)   用户是否倾向于选择更低的透明度
+
++ [`resolution` (en-US)](https://developer.mozilla.org/en-US/docs/Web/CSS/@media/resolution)   输出设备的像素密度（分辨率）
+
+  该`resolution`特征被指定为`<resolution>`表示输出设备的像素密度的值。这是一个范围功能，也就是说，您也可以使用前缀`min-resolution`和`**max-resolution**`变量分别查询最小值和最大值。
+
+  + 语法：
+
+    ```css
+    /* Exact resolution */
+    @media (resolution: 150dpi) {
+      p {
+        color: red;
+      }
+    }
+    
+    /* Minimum resolution */
+    @media (min-resolution: 72dpi) {
+      p {
+        font-size: 1.5em;
+      }
+    }
+    
+    /* Maximum resolution */
+    @media (max-resolution: 300dpi) {
+      p {
+        background: yellow;
+      }
+    }
+    ```
+
+    
+
++ [`scan` (en-US)](https://developer.mozilla.org/en-US/docs/Web/CSS/@media/scan)  输出设备的扫描过程（适用于电视等）
+
+  + 属性
+
+    + `interlace `该设备交替地绘制奇数行和偶数行。一些电视机使用隔行扫描。
+    + `progressive`该设备依次绘制所有线。所有电脑屏幕都使用逐行扫描。
+
+  + 语法：
+
+    ```css
+    p {
+      font-family: cursive;
+    }
+    
+    @media (scan: interlace) {
+      p {
+        font-family: sans-serif;
+      }
+    }
+    
+    @media (scan: progressive) {
+      p {
+        font-family: serif;
+      }
+    }
+    ```
+
+    
+
++ [`scripting` (en-US)](https://developer.mozilla.org/en-US/docs/Web/CSS/@media/scripting)  探测脚本（例如 JavaScript）是否可用
+
+  + 属性：
+
+    + `none`脚本在当前文档中完全不可用。
+    + `initial-only`在初始页面加载期间启用脚本，但不是之后。
+    + `enabled`当前文档支持并激活脚本。
+
+  + 语法：
+
+    ```css
+    p {
+      color: lightgray;
+    }
+    
+    @media (scripting: none) {
+      .script-none {
+         color: red;
+      }
+    }
+    
+    @media (scripting: initial-only) {
+      .script-initial-only {
+        color: red;
+      }
+    }
+    
+    @media (scripting: enabled) {
+      .script-enabled {
+        color: red;
+      }
+    }
+    ```
+
+    
+
++ [`update` (en-US)](https://developer.mozilla.org/en-US/docs/Web/CSS/@media/update-frequency)  输出设备更新内容的渲染结果的频率
+
++ [`width`](https://developer.mozilla.org/zh-CN/docs/Web/CSS/@media/width)  视窗（viewport）的宽度，包括纵向滚动条的宽度
+
+  该`width`特征被指定为`<length>`表示视口宽度的值。这是一个范围功能，也就是说，您也可以使用前缀`min-width`和`**max-width**`变量分别查询最小值和最大值。
+
+  + 语法：
+
+    ```css
+    /* Exact width */
+    @media (width: 360px) {
+      div {
+        color: red;
+      }
+    }
+    
+    /* Minimum width */
+    @media (min-width: 35rem) {
+      div {
+        background: yellow;
+      }
+    }
+    
+    /* Maximum width */
+    @media (max-width: 50rem) {
+      div {
+        border: 2px solid blue;
+      }
+    }
+    ```
+
+    
+
+# @font-face 字体
+
+
+
+使用自定义的字体
+
+## 1. 用法：
+
+```css
+@font-face
+{
+    font-family: myFirstFont;
+    src: url(sansation_light.woff);
+}
+ 
+div
+{
+    font-family:myFirstFont;
+}
+```
+
+
 
 
 
