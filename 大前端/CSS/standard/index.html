@@ -5,9 +5,20 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
-    <style></style>
+    <style>
+      .highlight {
+        display: none;
+        background-image: url('https://img.iplaysoft.com/wp-content/uploads/2019/free-images/free_stock_photo.jpg');
+      }
+    </style>
   </head>
   <body>
+    <ul class="shopping-list" id="awesome">
+      <li><span>Milk</span></li>
+      <li class="favorite" id="must-buy">
+        <span class="highlight">Sausage</span>
+      </li>
+    </ul>
     <script>
       // Function.prototype.myCall = function (context = window, ...args) {
       //   // 扩展参数，数据一个一个传d

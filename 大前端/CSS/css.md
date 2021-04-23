@@ -85,6 +85,8 @@ hex（16进制）表示法：
 2）em：相对单位，相对于父元素的字体大小
 每个元素必须有字体大小，如果没有声明，则直接使用父元素的字体大小，如果没有父元素（html），则使用基准字号。
 
+3）rem  rem是以html根元素中font-size 的大小为基准的相对度量单位，文本的大小不会随着窗口的大小改变而改变
+
 > user agent，UA，用户代理（浏览器）
 
 4. font-weight
@@ -268,6 +270,10 @@ link > visited > hover > active
 
 # 盒模型
 
+## 分类：
+
+
+
 box：盒子，每个元素在页面中都会生成一个矩形区域（盒子）
 
 盒子类型：
@@ -287,13 +293,13 @@ display默认值为inline
 
 无论是行盒、还是块盒，都由下面几个部分组成，从内到外分别是：
 
-1. 内容  content
+### + 内容  content
 
 width、height，设置的是盒子内容的宽高
 
 内容部分通常叫做整个盒子的**内容盒 content-box**
 
-2. 填充(内边距)  padding
+### + 填充(内边距)  padding
 
 盒子边框到盒子内容的距离
 
@@ -305,7 +311,11 @@ padding: 上 右 下 左
 
 填充区+内容区 = **填充盒 padding-box**
 
-3. 边框  border
++ 详解：
+
+  padding-top  padding-bottom 无法撑开行内非替换元素容器的大小，但是如果给行内非替换元素设置背景，可以看到区域有增加的视觉效果的，但是增加的部分不会影响到其他元素，给人一种没有被撑开的错觉
+
+### + 边框  border
 
 边框 = 边框样式 + 边框宽度 + 边框颜色
 
@@ -315,13 +325,32 @@ padding: 上 右 下 左
 
 边框+填充区+内容区 = **边框盒 border-box**
 
-4. 外边距  margin
+### + 外边距  margin
 
 边框到其他盒子的距离
 
 margin-top、margin-left、margin-right、margin-bottom
 
 速写属性margin
+
++ 详解：
+
+  margin-top  margin-bottom 无法作用于行内元素中的非替换元素，行内非替换元素无法设置宽高，设置margin也无法撑开高度，所以margin-top和margin-bottom 用在行内非替换元素中时会失效
+
+  ```css
+  img{
+      height: 100px;
+      margin-top: 40px;
+      margin-bottom: 40px;   // 会起作用
+  }
+  span {
+      height: 100px; // 不会起作用
+      margin-top: 40px; // 不会起作用
+      margin-top: 40px; // 不会起作用
+  }
+  ```
+
+  
 
 
 
@@ -668,6 +697,19 @@ odd: 关键字，等同于2n+1
 ## 3. 盒子隐藏
 
 1. display:none，不生成盒子
+
+   如果设置在某个元素父级，其子级的图片等资源不会加载
+
+   ```css
+   .parent {
+       display: none
+   }
+   .parent > .children {
+       background-image: url('xxxx.jpg')
+   }
+   // 原因：浏览器变得越来越聪明。今天，如果您的浏览器（取决于版本）可以确定图像没有用，则可能会跳过图像加载。
+   ```
+
 2. visibility:hidden，生成盒子，只是从视觉上移除盒子，盒子仍然占据空间。
 
 ## 4. 背景图
