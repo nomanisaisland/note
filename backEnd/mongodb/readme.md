@@ -95,3 +95,137 @@ return {
 }
 ```
 
+
+
+
+
+
+
+## 淘宝小程序版本 
+
+### 1. 增 insertOne insertMany
+
+```javascript
+cloud.db.collection("dataBaseName").insertOne({id: 1})
+
+cloud.db.collection("dataBaseName").insertOne([{id: 1},{id: 2}])
+```
+
+### 2. 删 deleteMany
+
+```javascript
+cloud.db.collection("dataBaseName").deleteMany({id: 1})
+```
+
+### 3. 改 updateMany
+
+```javascript
+cloud.db.collection("dataBaseName").updateMany({id: 1},{
+    $set: {
+        name: "tom"
+    },
+    $inc: {   // 1为自增 -1为自减
+        count: -1,
+        age: 1
+    }
+})
+```
+
+### 4. 查 find   限制最大操作数为500条
+
+```javascript
+const shopId = 123
+cloud.db.collection("dataBaseName").fnd({
+    id: 1,
+    $or: [{ shopId: shopId }, { shopId: "d65df1ec82668049b473c0d1e79e6488" }],   // 先匹配前面的，没有找到的话匹配后面的
+    addTime: {
+      $gt: Date.now(), // 大于当前时间   $lt  小于   $gte 大于等于   $lte  小于等于   $ne 不等于
+    },
+},{
+    projection: {  // 筛选返回的字段
+        age: 1
+    }
+})
+// 如果使用limit和skip做分页，那么一定要使用sort，不然拿到的数据会无序且重复
+```
+
+### 5. 替换 replaceOne
+
+```javascript
+cloud.db.collection('users').replaceOne(
+    {   // filter
+      name: 'tom',  
+      age: 18 
+    },
+    {  // data
+      name: 'jerry' 
+    }
+)
+```
+
+###  6. 统计
+
+```javascript
+cloud.db.collection('users').count(
+    {  
+      age: {$gt: 18} 
+    }
+)
+```
+
+### 7. 聚合查询
+
+```javascript
+cloud.db.collection('users').aggregate([
+    {  //$match 筛选
+      $match: {
+          name: 'tom',
+          hidden: {
+             $ne: true, // 不等于true
+          },
+      }   
+    },
+    { // join 分组，从表的信息
+      $lookup: {
+        from: "product",   // 表名
+        localField: "productId",   // 主表匹配字段
+        foreignField: "id",   // 从表匹配字段
+        as: "product",  // 别名
+      }
+    },
+    {
+      $sort: {  // 排序
+        'product.addTime': 1
+      }
+    },
+    {  // 拆分子数组
+      $unwind: {
+        path: "$task",   // 拆分的字段为task
+        preserveNullAndEmptyArrays: true  // 空数组也拆分
+      }
+    },
+    {
+      $addFields: { 子数组添加到主表的字段
+           repeat: "$task.repeat",
+      }
+    },
+    {
+        $project:{  // 返回字段配置
+    		
+    	}
+    }
+])
+
+
+//Exceeded memory limit for $group, but didn't allow external sort. Pass allowDiskUse:true to opt in.如果看到这个提示，那么被限制了
+//报错原因：mongo内存限制。 aggregate函数 使用$group时，数据大小必须小于16945KB。
+//解决方法：
+//在mongo中修改，如下例：
+db.stocks.aggregate( [
+      { $project : { cusip: 1, date: 1, price: 1, _id: 0 } },
+      { $sort : { cusip : 1, date: 1 } }
+   ],
+   { allowDiskUse: true }
+)
+```
+

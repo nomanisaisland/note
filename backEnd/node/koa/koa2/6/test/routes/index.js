@@ -8,7 +8,7 @@ router.get('/', async (ctx, next) => {
   })
 })
 
-router.get('/string', async (ctx, next) => {
+router.get('/svgCaptcha', async (ctx, next) => {
   const getString = () => {
     const cap = svgCaptcha.create({
       size: 4, // 验证码长度
@@ -24,7 +24,6 @@ router.get('/string', async (ctx, next) => {
     var text = cap.text.toLowerCase() // 验证码字符，忽略大小写
     return { svg: `${img}<span >${text}</span>` }
   }
-  console.log(getString())
   ctx.body = getString().svg
 })
 
