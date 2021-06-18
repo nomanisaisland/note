@@ -1,0 +1,1 @@
+https://24kcs.github.io/vue3_study/chapter2/1_type.html#%E7%B1%BB%E5%9E%8B%E6%96%AD%E8%A8%80

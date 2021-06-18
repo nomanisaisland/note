@@ -1,0 +1,3 @@
+<view>
+  <canvas onTap="canvasTouch" id="{{canvasId}}" style="width: {{canvasW}}rpx;height: {{canvasH}}rpx;background: {{canvasBg}};border-radius: {{radius}}"></canvas>
+</view>
