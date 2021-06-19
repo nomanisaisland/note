@@ -1,0 +1,129 @@
+# eslint
+
+```javascript
+{
+    // 以像素为单位控制字号。
+    "editor.fontSize": 16,
+    "eslint.enable": true,
+    "eslint.autoFixOnSave": true,
+    "eslint.run": "onType",
+    "eslint.options": {
+      "extensions": [
+        ".js",
+        ".vue",
+        ".html",
+        ".dart"
+      ]
+    },
+    "eslint.validate": [
+      {
+        "language": "vue",
+        "autoFix": true
+      },
+      {
+        "language": "javascript",
+        "autoFix": true
+      },
+      {
+        "language": "typescript",
+        "autoFix": true
+      },
+      {
+        "language": "html",
+        "autoFix": true
+      },
+      {
+        "language": "dart",
+        "autoFix": true
+      }
+    ],
+    "gitlens.advanced.messages": {
+      "suppressShowKeyBindingsNotice": true
+    },
+    "files.eol": "\n",
+    "[markdown]": {
+      "editor.quickSuggestions": true,
+      "editor.defaultFormatter": "yzhang.markdown-all-in-one"
+    },
+    "files.associations": {
+      ".eslintrc": "json",
+      "*.wpy": "vue",
+      "*.wxss": "css",
+      "*.wxml": "html",
+      "*.dart": "dart",
+      "*.cjson": "jsonc",
+      "*.wxs": "javascript"
+    },
+    "git.enableSmartCommit": true,
+    "explorer.confirmDelete": false,
+    "window.zoomLevel": 1,
+    "vsicons.dontShowNewVersionMessage": true,
+    "terminal.integrated.rendererType": "dom",
+    "prettier.semi": false,
+    "prettier.singleQuote": true,
+    "vetur.format.defaultFormatterOptions": {
+      "prettier": {
+        // 格式化不加分号
+        "semi": false,
+        // 格式化为单引号
+        "singleQuote": true
+      },
+      "js-beautify-html": {
+        "wrap_attributes": "force" // 可以换成上面任意一种value
+      },
+    },
+    "javascript.format.insertSpaceBeforeFunctionParenthesis": true,
+    "breadcrumbs.enabled": true,
+    "merge-conflict.autoNavigateNextConflict.enabled": true,
+    "explorer.confirmDragAndDrop": false,
+    "javascript.updateImportsOnFileMove.enabled": "always",
+    "[json]": {
+      "editor.defaultFormatter": "vscode.json-language-features",
+    },
+    "[javascript]": {
+      "editor.defaultFormatter": "esbenp.prettier-vscode",
+    },
+    "[html]": {
+      "editor.defaultFormatter": "esbenp.prettier-vscode",
+    },
+    "[scss]": {
+      "editor.defaultFormatter": "michelemelluso.code-beautifier"
+    },
+    "search.exclude": {
+      "**de_modules": false
+    },
+    "[css]": {
+      "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "files.defaultLanguage": "vue",
+    "[jsonc]": {
+      "editor.defaultFormatter": "vscode.json-language-features"
+    },
+    "fileheader.Author": "ganqianzhao",
+    "fileheader.LastModifiedBy": "ganqianzhao",
+    "vue-format.attr_end_with_gt": false,
+    "[typescript]": {
+      "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "[vue]": {
+      "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "emmet.includeLanguages": {
+      "wxml": "html"
+    },
+    "minapp-vscode.disableAutoConfig": true,
+    "liveServer.settings.donotShowInfoMsg": true,
+    "editor.codeActionsOnSave": {
+        "source.fixAll.eslint": true
+    },
+    "editor.suggestSelection": "first",
+    "vsintellicode.modify.editor.suggestSelection": "automaticallyOverrodeDefaultValue",
+    "editor.renderIndentGuides": false,
+    "cloudmusic.account.autoCheck": true,
+    "diffEditor.ignoreTrimWhitespace": false,
+    "z-reader.onlineSite": "起点",
+    "z-reader.encoding": "gbk"
+  }
+
+```
+

@@ -1,0 +1,5 @@
+<!--index.wxml-->
+<view class="container">
+  <cv-canvas />
+  <button size="default" onTap="load" type="primary">Button</button>
+</view>

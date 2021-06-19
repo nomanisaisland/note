@@ -1,0 +1,6 @@
+{
+  "usingComponents": {
+    "cv-canvas": "./cv-canvas/cv-canvas"
+  },
+  "pullRefresh": false
+}
